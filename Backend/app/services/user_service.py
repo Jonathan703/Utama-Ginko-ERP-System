@@ -111,5 +111,13 @@ def update_user(db: Session, user_id: int, user_data: UserUpdate) -> User:
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Usernname or email already exists."
+            detail="Username or email already exists."
         )
+    except Exception:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="internal server error during user update."
+        )
+
+def update_user_password(db:)
