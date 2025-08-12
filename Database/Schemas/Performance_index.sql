@@ -1,0 +1,18 @@
+CREATE INDEX idx_users_role_id ON users(role_id);
+CREATE INDEX idx_contracts_agency_id ON contracts(agency_id);
+CREATE INDEX idx_contracts_status ON contracts(status);
+CREATE INDEX idx_contracts_marketing_status ON contracts(marketing_status);
+CREATE INDEX idx_contracts_operations_status ON contracts(operations_status);
+CREATE INDEX idx_contracts_finance_status ON contracts(finance_status);
+CREATE INDEX idx_shipments_contract_id ON shipments(contract_id);
+CREATE INDEX idx_shipments_agency_id ON shipments(agency_id);
+CREATE INDEX idx_shipments_status ON shipments(status);
+CREATE INDEX idx_financial_transactions_contract_id ON financial_transactions(contract_id);
+CREATE INDEX idx_financial_transactions_agency_id ON financial_transactions(agency_id);
+CREATE INDEX idx_financial_transactions_status ON financial_transactions(status);
+CREATE INDEX idx_financial_transactions_due_date ON financial_transactions(due_date);
+CREATE INDEX idx_financial_transactions_transaction_type ON financial_transactions(transaction_type);
+CREATE INDEX idx_workflow_history_entity ON workflow_history(entity_type, entity_id);
+CREATE INDEX idx_workflow_history_user ON workflow_history(user_id);
+CREATE INDEX idx_notifications_user_id ON notifications(user_id);
+CREATE INDEX idx_notifications_is_read ON notifications(is_read);
