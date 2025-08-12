@@ -53,3 +53,4 @@ def require_permission(required_permissions: list):
         check_user_permission(user, required_permissions=required_permissions)
         return user 
     return permission_checker
+
