@@ -120,4 +120,61 @@ def update_user(db: Session, user_id: int, user_data: UserUpdate) -> User:
             detail="internal server error during user update."
         )
 
-def update_user_password(db:)
+def update_user_password(db: Session, user_id: int, current_password: str, new_password: str) -> bool:
+    db_user = get_user(db, user_id)
+    if not db_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    
+    if not verify_password(current_password, db_user.password_hash):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Current password is incorrect")
+    
+    db_user.password_hash = get_password_hash(new_password)
+    db_user.updated_at = datetime.now(UTC)
+    
+    try:
+        db.commit()
+        return True
+    except Exception:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to update password")
+    
+def deactivate_user(db: Session, user_id: int) -> User:
+    db_user = get_user(db, user_id)
+    if not db_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    
+    check_last_admin(db, user_id)
+    
+    db_user.is_active = False
+    db_user.updated_at = datetime.now(UTC)
+    
+    try:
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+    except Exception:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to deactivate user")
+    
+def activate_user(db: Session, user_id: int) -> User:
+    db_user = get_user(db, user_id)
+    if not db_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    
+    db_user.is_active = True
+    db_user.updated_at = datetime.now(UTC)
+    
+    try: 
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+    except Exception:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="failed to activate user")
+    
+def delete_user(db: Session. user_id: int) -> bool: 
+    db_user = get_user(db, user_id)
+    if not db_user: 
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    check_last_admin(db, user_id)
