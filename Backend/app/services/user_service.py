@@ -172,9 +172,76 @@ def activate_user(db: Session, user_id: int) -> User:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="failed to activate user")
     
-def delete_user(db: Session. user_id: int) -> bool: 
+def delete_user(db: Session, user_id: int) -> bool:
     db_user = get_user(db, user_id)
     if not db_user: 
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
     check_last_admin(db, user_id)
+    
+    return deactivate_user(db, user_id) is not None
+
+def change_user_role(db: Session, user_id: int, new_role_id: int) -> User:
+    db_user = get_user(db, user_id)
+    if not db_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    
+    if db_user.role and db_user.role.name == "admin" and new_role.name != "admin":
+        check_last_admin(db, user_id)
+        
+    db_user.role_id = new_role_id
+    db_user.update_at = datetime.now(UTC)
+    
+    try:
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+    except Exception:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail= "Failed to change user role")
+        
+def get_user_statistics(db: Session) -> dict:
+    total_users = db.query(User).count()
+    active_users = db.query(User).filter(User.is_active == True).count()
+    inactive_users = total_users - active_users
+    
+    role_stats = db.query(
+        Role.name,
+        db.func.count(User.id).label('count')
+    ).outerjoin(User).group_by(Role.name).all()
+    
+    role_distribution = {role_name: count for role_name, count in role_stats}
+    
+    return {
+        "total_users": total_users,
+        "active_users": active_users,
+        "inactive_users": inactive_users,
+        "role_distribution": role_distribution
+    }
+    
+def search_users(db: Session, query: str, skip: int = 0, limit: int = 100) -> List[User]:
+    search_query = f"%[query]%"
+    return db.query(User).filter(
+        (User.username.ilike(search_query)) |
+        (User.email.ilike(search_query)) |
+        (User.first_name.ilike(search_query)) |
+        (User.last_name.ilike(search_query))
+    ).offset(skip).limit(limit).all()
+    
+def get_users_with_role_info(db: Session, skip: int = 0, limit: int = 100) -> List[dict]:
+    users = db.query(User).options(joinedload(User.role)).offset(skip).limit(limit).all()
+    
+    result = []
+    for user in users:
+        role_info = {
+            "id": user.role.id,
+            "name": user.role.name,
+            "description": user.role.description
+        } if user.role else None
+        
+        user_dict = {
+            "id": user.id,
+            "username": user.username,
+            "email": user.first_name,
+            "last_name": 
+        }
