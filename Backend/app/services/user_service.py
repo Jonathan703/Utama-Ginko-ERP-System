@@ -117,7 +117,7 @@ def update_user(db: Session, user_id: int, user_data: UserUpdate) -> User:
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="internal server error during user update."
+            detail="Internal server error during user update."
         )
 
 def update_user_password(db: Session, user_id: int, current_password: str, new_password: str) -> bool:
@@ -186,7 +186,7 @@ def change_user_role(db: Session, user_id: int, new_role_id: int) -> User:
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     
-    if db_user.role and db_user.role.name == "admin" and new_role.name != "admin":
+    if db_user.role and db_user.role.name == "admin" and new_role_id.name != "admin":
         check_last_admin(db, user_id)
         
     db_user.role_id = new_role_id
@@ -243,5 +243,38 @@ def get_users_with_role_info(db: Session, skip: int = 0, limit: int = 100) -> Li
             "id": user.id,
             "username": user.username,
             "email": user.first_name,
-            "last_name": 
+            "last_name": user.last_name,
+            "is_active": user.is_active,
+            "last_login": user.last_login,
+            "created_at": user.created_at,
+            "role": role_info
         }
+        result.append(user_dict)
+        
+    return result
+
+def validate_user_credentials(db: Session, username: str, password: str) -> Optional[User]:
+    user = get_user_by_username(db, username)
+    if not user or not user.is_active:
+        return None
+    
+    if verify_password(password, user.password_hash):
+        return user
+
+    return None
+
+def update_last_login(db: Session, user_id: int) -> User:
+    db_user = get_user(db, user_id)
+    if not db_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    
+    db_user.last_login = datetime.now(UTC)
+    db_user.updated_at = datetime.now(UTC)
+    
+    try:
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+    except Exception:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to update last login")
