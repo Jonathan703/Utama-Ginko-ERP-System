@@ -44,5 +44,5 @@ def get_db_context():
     try:
         yield db
     finally:
-        db.close
+        db.close()
         
