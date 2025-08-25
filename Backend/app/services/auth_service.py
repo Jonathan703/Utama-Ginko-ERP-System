@@ -94,7 +94,6 @@ def get_current_user(db: Session, token: str):
         
     return user
 
-
 def check_user_permission(user, required_role: str = None, required_permissions: list = None):
     if not user.is_active:
         raise HTTPException(
