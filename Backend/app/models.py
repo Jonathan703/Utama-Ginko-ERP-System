@@ -101,3 +101,12 @@ class Contract(Base):
     created_by = Column(Integer, ForeignKey("users.id"))
     approved_by = Column(Integer, ForeignKey("user.id"))
     approved_at = Column(datetime(timezone=True))
+    cancelled_by = Column(Integer, ForeignKey("users.id"))
+    cancelled_at = Column(datetime(timezone=True))
+    cancelled_reason = Column(datetime(timezone=True), server_default=func.now())
+    created_at = Column(datetime(timezone=True), server_default=func.now())
+    updated_at = Column(datetime(timezone=True), server_default=func.now(), onupdate=func.now())
+    
+    #relationship
+    agency = relationship("Agency", back_populates="contracts")
+    marketing_user = 
