@@ -1,5 +1,5 @@
 import enum
-from sqlalchemy import (Column, Integer, String, Text, Boolean, datetime, Date, Numeric, ForeignKey, enum, JSON, Index, CheckConstraint)
+from sqlalchemy import (Column, Integer, String, Text, Boolean, datetime, Date, Numeric, ForeignKey, JSON, Index, CheckConstraint)
 from sqlalchemy.orm import relationship, validates
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import UUID
@@ -44,7 +44,7 @@ class UserSession(Base):
     __tablename__ = "user_sessions"
     
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
     session_token = Column(String(255), unique=True, nullable=False, index=True)
     refresh_token = Column(String(255), unique=True)
     expires_at = Column(datetime(timezone=True), nullable=False)
@@ -54,10 +54,10 @@ class UserSession(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(datetime(timezone=True), server_default=func.now())
     
-    user = relationship("User", back_populates="sessions")
+    user = relationship("User", back_populates="session")
     
 class Agency(Base):
-    __tablename__ = "agencies"
+    __tablename__ = "agency"
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
@@ -70,16 +70,16 @@ class Agency(Base):
     contact_person = Column(String(100))
     tax_id = Column(String(50))
     payment_terms = Column(Integer)
-    created_by = Column(Integer, ForeignKey("users.id"))
+    created_by = Column(Integer, ForeignKey("user.id"))
     created_at = Column(datetime(timezone=True), server_default=func.now())
-    updated_at = Column(datetime(timezone=True), server_default=func.now()), onupdate=func.now())
+    updated_at = Column(datetime(timezone=True), server_default=func.now()), onupdate=func.now()
     
 class Contract(Base):
-    __tablename__ = "contracts"
+    __tablename__ = "contract"
     
     id = Column(Integer, primary_key=True, index=True)
     contract_number = Column(String(50), unique=True, nullable=False)
-    agency_id = Column(Integer, ForeignKey("agencies.id"))
+    agency_id = Column(Integer, ForeignKey("agency.id"))
     title = Column(String(200), nullable=False)
     description = Column(Text)
     contract_type = Column(String(50))
@@ -89,24 +89,26 @@ class Contract(Base):
     currency = Column(String(3), default="IDR")
     payment_terms = Column(Text)
     status = Column(String(20), default="draft")
-    marketing_user_id = Column(Integer, ForeignKey("users.id"))
-    operation_user_id = Column(Integer, ForeignKey("users.id"))
-    finance_user_id = Column(Integer, ForeignKey("users.id"))
+    marketing_user_id = Column(Integer, ForeignKey("user.id"))
+    operation_user_id = Column(Integer, ForeignKey("user.id"))
+    finance_user_id = Column(Integer, ForeignKey("user.id"))
     marketing_remarks = Column(Text)
     operation_remarks = Column(Text)
     finance_remarks = Column(Text)
     marketing_status = Column(String(20), default="pending")
     operation_status = Column(String(20), default="pending")
     finance_status = Column(String(20), default="pending")
-    created_by = Column(Integer, ForeignKey("users.id"))
+    created_by = Column(Integer, ForeignKey("user.id"))
     approved_by = Column(Integer, ForeignKey("user.id"))
     approved_at = Column(datetime(timezone=True))
-    cancelled_by = Column(Integer, ForeignKey("users.id"))
+    cancelled_by = Column(Integer, ForeignKey("user.id"))
     cancelled_at = Column(datetime(timezone=True))
     cancelled_reason = Column(datetime(timezone=True), server_default=func.now())
     created_at = Column(datetime(timezone=True), server_default=func.now())
     updated_at = Column(datetime(timezone=True), server_default=func.now(), onupdate=func.now())
     
     #relationship
-    agency = relationship("Agency", back_populates="contracts")
-    marketing_user = 
+    agency = relationship("Agency", back_populates="contract")
+    marketing_user = relationship("User", foreign_keys=[marketing_user_id])
+    operation_user = relationship("User", foreign_keys=[operation_user_id])
+    
