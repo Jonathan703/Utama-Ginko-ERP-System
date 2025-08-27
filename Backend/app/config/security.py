@@ -4,6 +4,7 @@ from typing import Optional, Dict
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from dotenv import load_dotenv
+from datetime import UTC
 
 load_dotenv()
 
@@ -48,7 +49,7 @@ def create_access_token(data: Dict, expires_delta: Optional[timedelta] = None) -
     
     to_encode = data.copy()
     
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=SecurityConfig.ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.datetime.now(datetime.UTC) + (expires_delta or timedelta(minutes=SecurityConfig.ACCESS_TOKEN_EXPIRE_MINUTES))
     
     to_encode.update({"exp": expire})
     
