@@ -115,16 +115,38 @@ class Contract(Base):
     creator = relationship("User", foreign_keys=[created_by], back_populates="created_contracts")
     approver = relationship("User", foreign_keys=[approved_by], back_populates="approved_contracts")
     canceller = relationship("User", foreign_keys=[cancelled_by], back_populates="cancelled_contracts")
-    shipments = relationship("Shipment", back_populates="contract")
-    transactions = relationship("FinancialTransaction", back_populates="contract")
+    shipment = relationship("Shipment", back_populates="contract")
+    transaction = relationship("FinancialTransaction", back_populates="contract")
     
 class Shipment(Base):
-    __tablename__ = "shipments"
+    __tablename__ = "shipment"
     
     id = Column(Integer, primary_key=True, index=True)
     shipment_number = Column(String(50), unique=True, nullable=False)
     contract_id = Column(Integer, ForeignKey("contract.id"))
     agency_id =  Column(Integer, ForeignKey("agency.id"))
     vessel_name = Column(String(100), ForeignKey("agency.id"))
-    voyage_number = Column()
-    cargo_
+    voyage_number = Column(String(50))
+    cargo_type = Column(String(100))
+    cargo_description = Column(Text)
+    quantity = Column(Numeric(12, 2))
+    unit_of_measure = Column(String(20))
+    loading_port = Column(String(100))
+    discharge_port = Column(String(100))
+    loading_date = Column(Date)
+    discharge_date = Column(Date)
+    estimated_arrival = Column(Date)
+    actual_arrival = Column(Date)
+    status = Column(String(30), default="planned")
+    operation_remarks = Column(Text)
+    marketing_remarks = Column(Text)
+    special_instructions = Column(Text)
+    created_by = Column(Integer, ForeignKey("user.id"))
+    assigned_to = Column(Integer, ForeignKey("user.id"))
+    created_at = Column(datetime(timezone=True), server_default=func.now())
+    updated_at = Column(datetime(timezone=True), server_default=func.now())
+    
+    #relationship
+    contract = relationship("Contract", back_populates="shipment")
+    agency = relationship("Agency, back_populates="shipment)
+    creator = relationship("User")
