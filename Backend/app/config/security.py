@@ -49,7 +49,7 @@ def create_access_token(data: Dict, expires_delta: Optional[timedelta] = None) -
     
     to_encode = data.copy()
     
-    expire = datetime.datetime.now(datetime.UTC) + (expires_delta or timedelta(minutes=SecurityConfig.ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.now(UTC) + (expires_delta or timedelta(minutes=SecurityConfig.JWT_ACCESS_TOKEN_EXPIRES))
     
     to_encode.update({"exp": expire})
     
