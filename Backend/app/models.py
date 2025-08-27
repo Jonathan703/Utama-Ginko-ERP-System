@@ -127,3 +127,4 @@ class Shipment(Base):
     agency_id =  Column(Integer, ForeignKey("agency.id"))
     vessel_name = Column(String(100), ForeignKey("agency.id"))
     voyage_number = Column()
+    cargo
