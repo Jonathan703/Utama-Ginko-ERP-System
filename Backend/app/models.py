@@ -111,4 +111,19 @@ class Contract(Base):
     agency = relationship("Agency", back_populates="contract")
     marketing_user = relationship("User", foreign_keys=[marketing_user_id])
     operation_user = relationship("User", foreign_keys=[operation_user_id])
+    finance_user = relationship("User", foreign_keys=[finance_user_id])
+    creator = relationship("User", foreign_keys=[created_by], back_populates="created_contracts")
+    approver = relationship("User", foreign_keys=[approved_by], back_populates="approved_contracts")
+    canceller = relationship("User", foreign_keys=[cancelled_by], back_populates="cancelled_contracts")
+    shipments = relationship("Shipment", back_populates="contract")
+    transactions = relationship("FinancialTransaction", back_populates="contract")
     
+class Shipment(Base):
+    __tablename__ = "shipments"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    shipment_number = Column(String(50), unique=True, nullable=False)
+    contract_id = Column(Integer, ForeignKey("contract.id"))
+    agency_id =  Column(Integer, ForeignKey("agency.id"))
+    vessel_name = Column(String(100), ForeignKey("agency.id"))
+    voyage_number = Column()
