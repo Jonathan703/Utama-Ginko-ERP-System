@@ -148,5 +148,15 @@ class Shipment(Base):
     
     #relationship
     contract = relationship("Contract", back_populates="shipment")
-    agency = relationship("Agency, back_populates="shipment)
-    creator = relationship("User")
+    agency = relationship("Agency", back_populates="shipment")
+    creator = relationship("User", foreign_keys=[created_by], back_populates="created_shipment")
+    assignee = relationship("User", foreign_keys=[assigned_to], back_populates="assigned_shipment")
+    transaction = relationship("FinancialTransaction", back_populates="shipment")
+    
+class FinancialTransaction(Base):
+    __tablename__ = "financial_transaction"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    transaction_number = Column(String(50), unique=True, nullable=False)
+    contract_id = Column(Integer, ForeignKey("contracts.id"))
+    shipment_id = Column(Integer, ForeignKey("shipment.id"))
