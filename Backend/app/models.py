@@ -181,3 +181,15 @@ class FinancialTransaction(Base):
     approved_by = Column(Integer, ForeignKey("user.id"))
     approved_at = Column(datetime(timezone=True))
     cancelled_by = Column(Integer, ForeignKey("user.id"))
+    cancelled_at = Column(datetime(timezone=True))
+    cancelled_reason = Column(Text)
+    reminder_sent = Column(Boolean, default=False)
+    reminder_count = Column(Integer, default=0)
+    last_reminder_date = Column(datetime(timezone=True))
+    created_at = Column(datetime(timezone=True), server_default=func.now())
+    updated_at = Column(datetime(timezone=True), server_default=func.now(), onupdate=func.now())
+    
+    contract = relationship("Contract", back_populates="transaction")
+    shipment = relationship("Shipment", back_populates="transaction")
+    agency = relationship("Agency", back_populates="transaction")
+    
