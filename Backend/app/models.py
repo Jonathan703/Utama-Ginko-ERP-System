@@ -192,4 +192,6 @@ class FinancialTransaction(Base):
     contract = relationship("Contract", back_populates="transaction")
     shipment = relationship("Shipment", back_populates="transaction")
     agency = relationship("Agency", back_populates="transaction")
+    creator = relationship("User", foreignkey=[created_by], back_populates="created_transaction")
+    approver
     
