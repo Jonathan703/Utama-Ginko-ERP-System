@@ -193,5 +193,8 @@ class FinancialTransaction(Base):
     shipment = relationship("Shipment", back_populates="transaction")
     agency = relationship("Agency", back_populates="transaction")
     creator = relationship("User", foreignkey=[created_by], back_populates="created_transaction")
-    approver
+    approver = relationship("User", foreign_key=[approved_by], back_populates="approved_transaction")
+    canceller =  relationship("User", foreign_key=[cancelled_by], back_populates="cancelled_transacion")
     
+class WorkFlowHistory(Base):
+    __tablename__ = "workflow_history"
