@@ -124,7 +124,7 @@ class Shipment(Base):
     id = Column(Integer, primary_key=True, index=True)
     shipment_number = Column(String(50), unique=True, nullable=False)
     contract_id = Column(Integer, ForeignKey("contract.id"))
-    agency_id =  Column(Integer, ForeignKey("agency.id"))
+    agency_id = Column(Integer, ForeignKey("agency.id"))
     vessel_name = Column(String(100), ForeignKey("agency.id"))
     voyage_number = Column(String(50))
     cargo_type = Column(String(100))
@@ -194,7 +194,13 @@ class FinancialTransaction(Base):
     agency = relationship("Agency", back_populate="transaction")
     creator = relationship("User", foreign_key=[created_by], back_populate="created_transaction")
     approver = relationship("User", foreign_key=[approved_by], back_populate="approved_transaction")
-    cancelation =  relationship("User", foreign_key=[cancelled_by], back_populate="cancelled_transacion")
+    cancelation = relationship("User", foreign_key=[cancelled_by], back_populate="cancelled_transacion")
     
 class WorkFlowHistory(Base):
     __tablename__ = "workflow_history"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    entity_type = Column(String(20), nullable=False)
+    entity_id = Column(Integer, nullable=False)
+    action = Column(Strirng(30))
+    
