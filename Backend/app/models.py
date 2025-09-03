@@ -39,7 +39,6 @@ class User(Base):
     created_at = Column(datetime(timezone=True), server_default=func.now())
     updated_at = Column(datetime(timezone=True), server_default=func.now(), onupdate=func.now())
     
-    
 class UserSession(Base):
     __tablename__ = "user_sessions"
     
@@ -202,5 +201,5 @@ class WorkFlowHistory(Base):
     id = Column(Integer, primary_key=True, index=True)
     entity_type = Column(String(20), nullable=False)
     entity_id = Column(Integer, nullable=False)
-    action = Column(Strirng(30))
+    action = Column(String(30))
     
