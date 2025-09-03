@@ -18,7 +18,7 @@ class Role(Base):
     created_at = Column(datetime(timezone=True), server_default=func.now())
     updated_at = Column(datetime(timezone=True), server_default=func.now(), onupdate=func.now())
     
-    users = relationship("User", back_populates="role")
+    users = relationship("User", back_populate="role")
     
 class User(Base):
     __tablename__= "users"
@@ -54,7 +54,7 @@ class UserSession(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(datetime(timezone=True), server_default=func.now())
     
-    user = relationship("User", back_populates="session")
+    user = relationship("User", back_populate="session")
     
 class Agency(Base):
     __tablename__ = "agency"
@@ -108,15 +108,15 @@ class Contract(Base):
     updated_at = Column(datetime(timezone=True), server_default=func.now(), onupdate=func.now())
     
     #relationship
-    agency = relationship("Agency", back_populates="contract")
-    marketing_user = relationship("User", foreign_keys=[marketing_user_id])
-    operation_user = relationship("User", foreign_keys=[operation_user_id])
-    finance_user = relationship("User", foreign_keys=[finance_user_id])
-    creator = relationship("User", foreign_keys=[created_by], back_populates="created_contracts")
-    approver = relationship("User", foreign_keys=[approved_by], back_populates="approved_contracts")
-    canceller = relationship("User", foreign_keys=[cancelled_by], back_populates="cancelled_contracts")
-    shipment = relationship("Shipment", back_populates="contract")
-    transaction = relationship("FinancialTransaction", back_populates="contract")
+    agency = relationship("Agency", back_populate="contract")
+    marketing_user = relationship("User", foreign_key=[marketing_user_id])
+    operation_user = relationship("User", foreign_key=[operation_user_id])
+    finance_user = relationship("User", foreign_key=[finance_user_id])
+    creator = relationship("User", foreign_key=[created_by], back_populate="created_contracts")
+    approver = relationship("User", foreign_key=[approved_by], back_populate="approved_contracts")
+    canceller = relationship("User", foreign_key=[cancelled_by], back_populate="cancelled_contracts")
+    shipment = relationship("Shipment", back_populate="contract")
+    transaction = relationship("FinancialTransaction", back_populate="contract")
     
 class Shipment(Base):
     __tablename__ = "shipment"
@@ -147,11 +147,11 @@ class Shipment(Base):
     updated_at = Column(datetime(timezone=True), server_default=func.now())
     
     #relationship
-    contract = relationship("Contract", back_populates="shipment")
-    agency = relationship("Agency", back_populates="shipment")
-    creator = relationship("User", foreign_keys=[created_by], back_populates="created_shipment")
-    assignee = relationship("User", foreign_keys=[assigned_to], back_populates="assigned_shipment")
-    transaction = relationship("FinancialTransaction", back_populates="shipment")
+    contract = relationship("Contract", back_populate="shipment")
+    agency = relationship("Agency", back_populate="shipment")
+    creator = relationship("User", foreign_key=[created_by], back_populate="created_shipment")
+    assignee = relationship("User", foreign_key=[assigned_to], back_populate="assigned_shipment")
+    transaction = relationship("FinancialTransaction", back_populate="shipment")
     
 class FinancialTransaction(Base):
     __tablename__ = "financial_transaction"
@@ -189,12 +189,12 @@ class FinancialTransaction(Base):
     created_at = Column(datetime(timezone=True), server_default=func.now())
     updated_at = Column(datetime(timezone=True), server_default=func.now(), onupdate=func.now())
     
-    contract = relationship("Contract", back_populates="transaction")
-    shipment = relationship("Shipment", back_populates="transaction")
-    agency = relationship("Agency", back_populates="transaction")
-    creator = relationship("User", foreignkey=[created_by], back_populates="created_transaction")
-    approver = relationship("User", foreign_key=[approved_by], back_populates="approved_transaction")
-    canceller =  relationship("User", foreign_key=[cancelled_by], back_populates="cancelled_transacion")
+    contract = relationship("Contract", back_populate="transaction")
+    shipment = relationship("Shipment", back_populate="transaction")
+    agency = relationship("Agency", back_populate="transaction")
+    creator = relationship("User", foreign_key=[created_by], back_populate="created_transaction")
+    approver = relationship("User", foreign_key=[approved_by], back_populate="approved_transaction")
+    cancelation =  relationship("User", foreign_key=[cancelled_by], back_populate="cancelled_transacion")
     
 class WorkFlowHistory(Base):
     __tablename__ = "workflow_history"
