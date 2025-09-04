@@ -202,4 +202,25 @@ class WorkFlowHistory(Base):
     entity_type = Column(String(20), nullable=False)
     entity_id = Column(Integer, nullable=False)
     action = Column(String(30))
+    from_status = Column(String(30))
+    to_status = Column(String(30))
+    user_id = Column(Integer, ForeignKey("user.id"))
+    department = Column(String(20))
+    remarks = Column(Text)
+    ip_address = Column(String(45))
+    user_agent = Column(Text)
+    created_at = Column(datetime(timezone=True), server_default=func.now())
+    
+    user = relationship("User", back_populates="workflow_actions")
+    
+class Document(Base):
+    __tablename__ = "documents"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    document_name = Column(String(255), nullable=False)
+    file_path = Column(String(500), nullable=False)
+    file_size = Column(Integer)
+    mime_type = Column(String(100))
+    entity_type = Column(String(20))
+    entity_id = Column(Integer)
     
