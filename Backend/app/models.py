@@ -223,4 +223,11 @@ class Document(Base):
     mime_type = Column(String(100))
     entity_type = Column(String(20))
     entity_id = Column(Integer)
+    uploaded_by = Column(Integer, ForeignKey("user.id"))
+    category = Column(String(50))
+    description = Column(Text)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(datetime(timezone=True), server_default=func.now())
+    updated_at = Column(datetime(timzeone=True), server_default=func.now(), onupdate=func.now())
     
+    uploader = relationship("User", back_populates="documents")
