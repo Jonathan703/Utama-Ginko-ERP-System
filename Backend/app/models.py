@@ -1,4 +1,3 @@
-import enum
 from sqlalchemy import (Column, Integer, String, Text, Boolean, datetime, Date, Numeric, ForeignKey, JSON, Index, CheckConstraint)
 from sqlalchemy.orm import relationship, validates
 from sqlalchemy.sql import func
@@ -7,6 +6,21 @@ import uuid
 from app.database import Base
 from datetime import datetime
 from typing import Optional
+import enum
+from sqlalchemy import Enum
+
+id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+
+class ContractStatus(str, enum.Enum):
+    DRAFT = "draft"
+    PENDING = "pending"
+    APPROVED = "approved"
+    ACTIVE = "active"
+    COMPLETED = "completed"
+    CANCELLED = "cancelled"
+    EXPIRED = "expired"
+    
+    status = Column(Enum(ContractStatus), default=ContractStatus.DRAFT, nullable=False)
 
 class Role(Base):
     __tablename__ = "roles"
@@ -30,7 +44,7 @@ class User(Base):
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
     phone = Column(String(20))
-    role_id = Column(Integer, ForeignKey("roles.id"))
+    role_id = Column(Integer, ForeignKey("roles.id", ondelete="RESTRICT"))
     is_active = Column(Boolean, default=True)
     last_login = Column(datetime(timezone=True))
     mfa_enabled = Column(Boolean, default=False)
@@ -159,7 +173,7 @@ class FinancialTransaction(Base):
     transaction_number = Column(String(50), unique=True, nullable=False)
     contract_id = Column(Integer, ForeignKey("contracts.id"))
     shipment_id = Column(Integer, ForeignKey("shipment.id"))
-    agency_id = Column(Integer, ForeignKey("agencies.id"))
+    agency_id = Column(Integer, ForeignKey("agencies.id", ondelete="SET NULL"), nullable = True)
     transaction_type = Column(String(30), nullable=False)
     invoice_id = Column(Integer)
     amount = Column(Numeric(15, 2))
@@ -228,7 +242,6 @@ class Document(Base):
     description = Column(Text)
     is_active = Column(Boolean, default=True)
     created_at = Column(datetime(timezone=True), server_default=func.now())
-    updated_at = Column(datetime(timzeone=True), server_default=func.now(), onupdate=func.now())
+    updated_at = Column(datetime(timezone=True), server_default=func.now(), onupdate=func.now())
     
     uploader = relationship("User", back_populates="documents")
-    
