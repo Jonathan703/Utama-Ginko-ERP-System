@@ -245,3 +245,14 @@ class Document(Base):
     updated_at = Column(datetime(timezone=True), server_default=func.now(), onupdate=func.now())
     
     uploader = relationship("User", back_populates="documents")
+    
+class Notification(Base):
+    __tablename__ = "notification"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    title = Column(String(200), nullable=False)
+    message = Column(Text, nullable=False)
+    type = Column(String(20), default="info")
+    priority = Column(Integer, default=1)
+    is_read
