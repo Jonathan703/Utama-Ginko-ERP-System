@@ -255,4 +255,7 @@ class Notification(Base):
     message = Column(Text, nullable=False)
     type = Column(String(20), default="info")
     priority = Column(Integer, default=1)
-    is_read
+    is_read = Column(Boolean, default=False)
+    related_entity_type = Column(Integer)
+    action_url = Column(String(500))
+    created_at = Column(datetime(timezone=True), server_default=func.now())
