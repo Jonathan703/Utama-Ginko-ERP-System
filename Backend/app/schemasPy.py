@@ -194,4 +194,4 @@ class ContrctResponse(ContractBase):
     finance_status: FinanceStatus
     created_by: Optional[int] = None
     approved_by: Optional[int] = None
-    approved_at: : Optional[datetime] = None
+    approved_at: Optional[datetime] = None
