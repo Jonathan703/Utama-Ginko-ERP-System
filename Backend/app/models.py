@@ -12,6 +12,7 @@ from sqlalchemy import Enum
 id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
 class ContractStatus(str, enum.Enum):
+    
     DRAFT = "draft"
     PENDING = "pending"
     APPROVED = "approved"
@@ -209,7 +210,7 @@ class FinancialTransaction(Base):
     approver = relationship("User", foreign_key=[approved_by], back_populate="approved_transaction")
     cancelation = relationship("User", foreign_key=[cancelled_by], back_populate="cancelled_transacion")
     
-class WorkFlowHistory(Base):
+class WorkflowHistory(Base):
     __tablename__ = "workflow_history"
     
     id = Column(Integer, primary_key=True, index=True)
@@ -259,3 +260,23 @@ class Notification(Base):
     related_entity_type = Column(Integer)
     action_url = Column(String(500))
     created_at = Column(datetime(timezone=True), server_default=func.now())
+    read_at = Column(datetime(timezone=True))
+    
+    recipient = relationship("User", back_populates="transaction")
+    
+Index('idx_user_role_id', User.role_id)
+Index('idx_contract_agency_id', Contract.agency_id)
+Index('idx_contract_status', Contract.status)
+Index('idx_shipment_contract_id', Shipment.contract_id)
+Index('idx_shipment_status', Shipment.status)
+Index('idx_financial_transaction_contract_id', FinancialTransaction.contract_id)
+Index('idx_financial_transaction_status', FinancialTransaction.status)
+Index('idx_workflow_history_entity', WorkflowHistory.entity_type, WorkflowHistory.entity_id)
+Index('idx_transaction_user_id', Notification.user_id)
+Index('idx_trasaction_is_read', Notification.is_read)
+
+CheckConstraint("status IN ('draft', 'pending', 'approved', 'active', 'completed', 'cancelled, 'expired')", name="check_contract_status")
+CheckConstraint("marketing_status IN ('pending', 'submitted', 'approved', 'rejected', 'cancelled')", name="check_marketing_status")
+CheckConstraint("operation_status IN ('pending', 'submitted', 'approved', 'rejected', 'cancelled')", name="check_operation_status")
+CheckConstraint("finance_status IN ('pending', 'processing', 'completed', 'cancelled')", name="check_finance_status")
+CheckConstraint("transaction_type IN('invoice', 'payment', 'credit_note', 'debit_note', 'advance', 'refund')", name="check_transaction_type")
