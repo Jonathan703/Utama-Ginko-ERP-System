@@ -231,3 +231,4 @@ class Document(Base):
     updated_at = Column(datetime(timzeone=True), server_default=func.now(), onupdate=func.now())
     
     uploader = relationship("User", back_populates="documents")
+    
