@@ -208,4 +208,5 @@ class ShipmentBase(BaseModel):
     shipment_number: str
     contract_id: int
     agency_id: int
-    vessel_id:
+    vessel_id: int
+    
