@@ -247,3 +247,19 @@ class ShipmentResponse(ShipmentBase):
     status: str
     operation_remarks: Optional[str] = None
     marketing_remakrs: Optional[str] = None
+    special_instruction: Optional[str] = None
+    
+class ShipmentResponse(ShipmentBase):
+    id: int
+    status: str
+    operation_remarks: Optional[str] = None
+    marketing_remarks: Optional[str] = None
+    created_by: Optional[int] = None
+    assigned_to: Optional[int] = None
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
+        
+class FinancialTransactionBase
