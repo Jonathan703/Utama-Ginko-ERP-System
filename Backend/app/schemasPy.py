@@ -195,3 +195,17 @@ class ContrctResponse(ContractBase):
     created_by: Optional[int] = None
     approved_by: Optional[int] = None
     approved_at: Optional[datetime] = None
+    cancelled_by: Optional[int] = None
+    cancelled_at: Optional[datetime] = None
+    cancelled_reason: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
+        
+class ShipmentBase(BaseModel):
+    shipment_number: str
+    contract_id: int
+    agency_id: int
+    vessel_id:
