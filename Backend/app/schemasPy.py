@@ -208,5 +208,42 @@ class ShipmentBase(BaseModel):
     shipment_number: str
     contract_id: int
     agency_id: int
-    vessel_id: int
+    vessel_name: Optional[str] = None
+    voyage_number: Optional[str] = None
+    cargo_type: Optional[str] = None
+    cargo_description: Optional[str] = None
+    quantity: Optional[float] = None
+    unit_of_measure: Optional [str] = None
+    loading_port: Optional[str] = None
+    discharge_port: Optional[str] = None
+    estimated_arrival: Optional[str] = None
+    actual_of_arrival: Optional[str] = None
+    special_instructions: Optional[str] = None
+    artificial_constrac: Optional[str] = None
     
+class ShipmentCreate(ShipmentBase):
+    pass
+
+class ShipmentUpdate(BaseModel):
+    vessel_name: Optional[str] = None
+    voyage_number: Optional[float] = None
+    cargo_type: Optional[str] = None
+    cargo_description: Optional[str] = None
+    quantity: Optional[float] = None
+    unit_of_measure: Optional[str] = None
+    loading_port: Optional[str] = None
+    discharge_port: Optional[str] = None
+    loading_port: Optional[date] = None
+    discharge_date: Optional[date] = None
+    estimated_arrival: Optional[date] = None
+    actual_arrival: Optional[date] = None
+    status: Optional[str] = None
+    operation_remarks: Optional[str] = None
+    marketing_remarks: Optional[str] = None
+    special_instruction: Optional[str] = None
+    
+class ShipmentResponse(ShipmentBase):
+    id: int
+    status: str
+    operation_remarks: Optional[str] = None
+    marketing_remakrs: Optional[str] = None
