@@ -262,4 +262,13 @@ class ShipmentResponse(ShipmentBase):
     class Config:
         from_attributes = True
         
-class FinancialTransactionBase
+class FinancialTransactionBase(BaseModel):
+    transaction_number: str
+    contract_id: Optional[int] = None
+    shipment_id: Optional[int] = None
+    agency_id: Optional[int] = None
+    transaction_type: TransactionType
+    invoice_id: Optional[int] = None
+    amount: float
+    currency: str = "IDR"
+    exchange_rate: Optional[float] = 1.0
