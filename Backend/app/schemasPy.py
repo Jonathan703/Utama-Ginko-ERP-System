@@ -272,3 +272,17 @@ class FinancialTransactionBase(BaseModel):
     amount: float
     currency: str = "IDR"
     exchange_rate: Optional[float] = 1.0
+    due_date: Optional[date] = None
+    payment_date: Optional[date] = None
+    payment_method: Optional[str] = None
+    description: Optional[str] = None
+    notes: Optional[str] = None
+    tax_rate: Optional[float] = 0.0
+    discount_amount: Optional[float] = 0.0
+    
+class FinancialTransactionCreate(FinancialTransactionBase):
+    pass
+
+class FinancialTransactionpdate(BaseModel):
+    transaction_type: Optional[TransactionType] = None
+    
