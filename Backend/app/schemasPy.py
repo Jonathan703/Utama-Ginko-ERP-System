@@ -285,4 +285,26 @@ class FinancialTransactionCreate(FinancialTransactionBase):
 
 class FinancialTransactionpdate(BaseModel):
     transaction_type: Optional[TransactionType] = None
-    
+    amount: Optional[float] = None
+    currency: Optional[str] = None
+    exchange_rate: Optional[float] = None
+    due_date: Optional[date] = None
+    payment_date: Optional[date] = None
+    status: Optional[str] = None
+    payment_method: Optional[str] = None
+    description: Optional[str] = None
+    notes: Optional[str] = None
+    tax_rate: Optional[float] = None
+    discount_amount: Optional[float] = None
+
+class FinancialTransactionResponse(FinancialTransactionBase):
+    id: int
+    amount_local: Optional[float] = None
+    tax_amount: Optional[float] = None
+    discount_amount: float
+    status: str
+    reminder_sent: Optional[bool] = None
+    reminder_count: Optional[int] = None
+    last_reminder_date: Optional[datetime] = None
+    created_by: Optional[int] = None
+    app
