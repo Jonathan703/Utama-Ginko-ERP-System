@@ -307,4 +307,25 @@ class FinancialTransactionResponse(FinancialTransactionBase):
     reminder_count: Optional[int] = None
     last_reminder_date: Optional[datetime] = None
     created_by: Optional[int] = None
-    app
+    approved_by: Optional[int] = None
+    cancelled_by: Optional[int] = None
+    cancelld_reason: Optional[str] = None
+    created_at = datetime
+    updated_at = datetime
+    
+    class Config:
+        from_attributes = True
+        
+class Workflowaction(BaseModel):
+    entity_type: str
+    entity_id: int
+    action: str
+    from_status: Optional[str] = None
+    to_status: Optional[str] = None
+    department: Optional[str] = None
+    remark: Optional[str] = None
+    
+class WorkflowHistoryResponse(WorkflowAction):
+    id: int
+    user_id: Optional[int] = None
+    ip_address: Optional[str] = None
