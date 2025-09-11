@@ -316,7 +316,7 @@ class FinancialTransactionResponse(FinancialTransactionBase):
     class Config:
         from_attributes = True
         
-class Workflowaction(BaseModel):
+class WorkflowAction(BaseModel):
     entity_type: str
     entity_id: int
     action: str
@@ -329,3 +329,31 @@ class WorkflowHistoryResponse(WorkflowAction):
     id: int
     user_id: Optional[int] = None
     ip_address: Optional[str] = None
+    user_agent: Optional[str] = None
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+        
+class DocumentBase(BaseModel):
+    document_name: str
+    entity_type: Optional[str] = None
+    entity_id: Optional[int] = None
+    category: Optional[str] = None
+    description: Optional[str] = None
+
+class DocumentCreate(DocumentBase):
+    pass
+
+class DocomentResponse(DocumentBase):
+    id: int
+    file_path: str
+    file_size: Optional[int] = None
+    mime_type: Optional[int] = None
+    uploaded_by: Optional[int] = None
+    is_active: bool
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
