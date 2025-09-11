@@ -1,7 +1,8 @@
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, EmailStr
 from typing import Optional, List, Dict, Any
 from datetime import datetime, date
 from enum import Enum
+from app.models import UserRole,  ContractStatus, InvoiceStatus
 
 class ContractStatus(str, Enum):
     DRAFT = "draft"
@@ -47,9 +48,11 @@ class Token(BaseModel):
     refresh_token: str
     token_type: str
     user: Dict[str, Any]
+    mfa_required: Optional[bool] = False
     
 class TokenData(BaseModel):
     username: Optional[str] = None
+    email: Optional[str] = None
     user_id: Optional[int] = None
     role: Optional[str] = None
     exp: Optional[int] = None
@@ -59,11 +62,12 @@ class UserLogin(BaseModel):
     password: str
     mfa_code: Optional[str] = None
     
-class MFASetup(BaseModel):
+class MFASetupResponse(BaseModel):
     secret: str
-    qr_code: str
-    
+    qr_code_uri: str
+
 class MFAVerify(BaseModel):
+    otp: str
     mfa_code: str
     backup_code: Optional[str] = None
     
