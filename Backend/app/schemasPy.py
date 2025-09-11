@@ -357,3 +357,44 @@ class DocomentResponse(DocumentBase):
     
     class Config:
         from_attributes = True
+        
+class NotificationBase(BaseModel):
+    title: str
+    message: str
+    type: str = "info"
+    priority: int = 1
+    related_entity_type: Optional[str] = None
+    related_entity_type: Optional[str] = None
+    action_url: Optional[str] = None
+    
+class NotificationCreate(NotificationBase):
+    user_id: int
+
+class NotificationResponse(NotificationBase):
+    id: int
+    user_id: int
+    is_read: bool
+    created_at: datetime
+    read_at: Optional[datetime] = None
+    
+    class Config:
+        from_attributes = True
+        
+class UserStatistics(BaseModel):
+    total_users: int
+    active_users: int
+    inactive_users: int
+    role_distribution: Dict[str, int]
+    
+class ContractStatistics(BaseModel):
+    total_contracts: int
+    contracts_by_status: Dict[str, int]
+    contracts_by_type: Dict[str, int]
+    contracts_by_month: Dict[str, int]
+    
+class FinancialStatstics(BaseModel):
+    total_transaction: int
+    total_revenue: float
+    outstanding_payments: float
+    overdue_payments: int
+    transactions_by_type: Dict[str, int]
