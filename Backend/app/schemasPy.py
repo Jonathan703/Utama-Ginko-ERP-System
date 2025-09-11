@@ -398,3 +398,4 @@ class FinancialStatstics(BaseModel):
     outstanding_payments: float
     overdue_payments: int
     transactions_by_type: Dict[str, int]
+
