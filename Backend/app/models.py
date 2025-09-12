@@ -8,6 +8,7 @@ from datetime import datetime
 from typing import Optional
 import enum
 from sqlalchemy import Enum
+import enum
 
 id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
