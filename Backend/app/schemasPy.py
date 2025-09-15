@@ -390,12 +390,6 @@ class UserStatistics(BaseModel):
     inactive_users: int
     role_distribution: Dict[str, int]
     
-class ContractStatistics(BaseModel):
-    total_contracts: int
-    contracts_by_status: Dict[str, int]
-    contracts_by_type: Dict[str, int]
-    contracts_by_month: Dict[str, int]
-    
 class FinancialStatstics(BaseModel):
     total_transaction: int
     total_revenue: float
@@ -403,3 +397,9 @@ class FinancialStatstics(BaseModel):
     overdue_payments: int
     transactions_by_type: Dict[str, int]
 
+class ContractStatistics(BaseModel):
+    total_contracts: int
+    contracts_by_status: Dict[str, int]
+    contracts_by_type: Dict[str, int]
+    contracts_by_month: Dict[str, int]; date
+    description: Optional[str]
