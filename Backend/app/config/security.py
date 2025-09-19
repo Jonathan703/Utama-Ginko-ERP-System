@@ -23,10 +23,10 @@ class SecurityConfig:
     SESSION_COOKIE_SAMESITE = "Lax"
     
     CORS_ORIGINS = os.environ.get('CORS_ORIGINS', 'http://localhost:3000'). split(',')
-    
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto",
+
+pwd_context = CryptContext (
+    schemes= ["bcrypt"],
+    depreated="auto"
     rounds=SecurityConfig.BCRYPT_LOG_ROUNDS
 )
 
@@ -37,16 +37,6 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 def create_access_token(data: Dict, expires_delta: Optional[timedelta] = None) -> str:
-    """
-    Args:
-    data (Dict): The payload data to encode in the token.
-    expires_delta (Optional[timedelta]): The expiration time. If None,
-    the default from Security Config is being used.
-    
-    Returns:
-        str: The encoded JWT token
-    """
-    
     to_encode = data.copy()
     
     expire = datetime.now(UTC) + (expires_delta or timedelta(minutes=SecurityConfig.JWT_ACCESS_TOKEN_EXPIRES))
@@ -60,9 +50,9 @@ def create_access_token(data: Dict, expires_delta: Optional[timedelta] = None) -
     )
     
     return encoded_jwt
-    
+
 def verify_token(token: str) -> Optional[Dict]:
-    try: 
+    try:
         payload = jwt.decode(
             token,
             SecurityConfig.JWT_SECRET_KEY,
@@ -71,11 +61,3 @@ def verify_token(token: str) -> Optional[Dict]:
         return payload
     except JWTError:
         return None
-    
-def verify_token(token: str) -> Optional[Dict]:
-    try:
-        payload = jwt.decode(
-            token,
-            SecurityConfig.JWT_SECRET_KEY,
-            algorithms=[SecurityConfig.JWT_ALGORITHM]
-        )
