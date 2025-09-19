@@ -60,17 +60,9 @@ def create_access_token(data: Dict, expires_delta: Optional[timedelta] = None) -
     )
     
     return encoded_jwt
-
+    
 def verify_token(token: str) -> Optional[Dict]:
-    """ Decodes and veifies a JWT token.
-    Args:
-        token (str): The JWT token to veirfy.
-        
-    Returns:
-        Optional[dict]: The payload of the token if valid, otherwise None.
-        
-    """
-    try:
+    try: 
         payload = jwt.decode(
             token,
             SecurityConfig.JWT_SECRET_KEY,
