@@ -71,3 +71,11 @@ def verify_token(token: str) -> Optional[Dict]:
         return payload
     except JWTError:
         return None
+    
+def verify_token(token: str) -> Optional[Dict]:
+    try:
+        payload = jwt.decode(
+            token,
+            SecurityConfig.JWT_SECRET_KEY,
+            algorithms=[SecurityConfig.JWT_ALGORITHM]
+        )
