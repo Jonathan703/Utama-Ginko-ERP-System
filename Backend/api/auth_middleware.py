@@ -16,8 +16,6 @@ def get_token_from_header(request: Request) -> Optional[str]:
         return token
     except ValueError:
         return None
-    
-
 
 async def get_current_active_user(
     db: Session = Depends(get_db),
