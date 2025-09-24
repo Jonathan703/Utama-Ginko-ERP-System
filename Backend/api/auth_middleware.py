@@ -17,6 +17,8 @@ def get_token_from_header(request: Request) -> Optional[str]:
     except ValueError:
         return None
     
+
+
 async def get_current_active_user(
     db: Session = Depends(get_db),
     token: str = Depends(get_token_from_header)
@@ -51,6 +53,5 @@ def require_permission(required_permissions: list):
         user = Depends(get_current_active_user)
     ):
         check_user_permission(user, required_permissions=required_permissions)
-        return user 
+        return user
     return permission_checker
-
