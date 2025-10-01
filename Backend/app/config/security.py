@@ -26,7 +26,7 @@ class SecurityConfig:
 
 pwd_context = CryptContext (
     schemes= ["bcrypt"],
-    depreated="auto"
+    depreated="auto",
     rounds=SecurityConfig.BCRYPT_LOG_ROUNDS
 )
 
