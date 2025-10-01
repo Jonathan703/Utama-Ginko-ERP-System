@@ -27,7 +27,7 @@ async def get_current_active_user(
             detail="Not authenticated",
             headers={"WWW-Autheticate": "Bearer"},
         )
-    
+        
     user = get_current_user(db, token)
     if not user:
         raise HTTPException(
