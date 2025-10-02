@@ -111,6 +111,6 @@ def check_user_permission(user, required_role: str = None, required_permissions:
             missing_permissions = set(required_permissions) - role_permissions
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail=f"Access is denied. Missiong permissions: {', '. join(missing_permissions)}"
+                detail=f"Access is denied. Missing permissions: {', '. join(missing_permissions)}"
             )
     return True
