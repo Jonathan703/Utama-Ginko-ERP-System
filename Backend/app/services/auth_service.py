@@ -120,3 +120,4 @@ def check_user_permission(user, required_role: str = None, required_permissions:
     
     if required_permissions and user.role:
         role permissions = user.role.permission
+    
