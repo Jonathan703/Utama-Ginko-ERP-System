@@ -114,10 +114,3 @@ def check_user_permission(user, required_role: str = None, required_permissions:
                 detail=f"Access is denied. Missing permissions: {', '. join(missing_permissions)}"
             )
     return True
-
-    if user.role and user.role.name == "admin":
-        return true
-    
-    if required_permissions and user.role:
-        role permissions = user.role.permission
-    
