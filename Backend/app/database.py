@@ -48,8 +48,8 @@ def get_db():
     db = SessionLocal()
     try:
         yield db
-    finaly:
-        db.close
+    finaly: #
+db.close
 
 Get_Codeo()
 
