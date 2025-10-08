@@ -60,5 +60,3 @@ def verify_token(token: str) -> Optional[Dict]:
         return payload
     except JWTError:
         return None
-
-def verify(token: str)
