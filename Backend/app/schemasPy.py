@@ -4,6 +4,7 @@ from datetime import datetime, date
 from enum import Enum
 from app.models import UserRole,  ContractStatus, InvoiceStatus
 
+
 class ContractStatus(str, Enum):
     DRAFT = "draft"
     PENDING = "pending"
