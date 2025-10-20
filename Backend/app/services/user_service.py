@@ -278,4 +278,5 @@ def update_last_login(db: Session, user_id: int) -> User:
     except Exception:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to update last login")
+
     
