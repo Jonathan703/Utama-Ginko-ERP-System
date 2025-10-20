@@ -76,4 +76,6 @@ def get_db_context():
         yield db
     finally:
         db.close()
-build
+@contextmanager
+def get_db_context():
+    db = SessionLocal()
