@@ -1,4 +1,4 @@
-# Copyright © 2025 Jonathan Sidabutar & Utama Ginko Maritim from Tirta Maritim Internasional Group. All rights reserved
+# Copyright © 2025 Jonathan Sidabutar, Felix and Utama Ginko Maritim from Tirta Maritim Internasional Group. All rights reserved
 
 This Ginko ERP (Enterprise Resource Planning) is proprietary software developed by Jonathan Sidabutar for Utama Ginko Maritim a company within Tirta Maritim Internasional Group. This software is still in a state of development. Unauthorized reproduction, modification, or distribution of this software or any portion thereof is strictly prohibited unless expressly authorized in writing by the copyright owner.
 
