@@ -155,7 +155,7 @@ def deactivate_user(db: Session, user_id: int) -> User:
     except Exception:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to deactivate user")
-    
+        
 def activate_user(db: Session, user_id: int) -> User:
     db_user = get_user(db, user_id)
     if not db_user:
