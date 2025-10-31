@@ -209,7 +209,7 @@ def get_user_statistics(db: Session) -> dict:
         Role.name,
         db.func.count(User.id).label('count')
     ).outerjoin(User).group_by(Role.name).all()
-    
+
     role_distribution = {role_name: count for role_name, count in role_stats}
     
     return {
@@ -279,4 +279,21 @@ def update_last_login(db: Session, user_id: int) -> User:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to update last login")
 
+def update_new_project(db:Session, user_id: int) -> User:
+    db_user = get_user(db, user_id)
+    if not db_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found")
     
+    db_user.last_login = datetime.now(UTC)
+    db_user.updated_at = datetime.now(UTC)
+    
+    try:
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+    except Exception:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_IS_AT_PROBLEM, detail="Failed to update last project")
+    
+def update_new_login(db:Session, user_id: int) -> User:
+    db_user = get_user(db, user_id)
