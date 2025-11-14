@@ -294,3 +294,6 @@ def update_new_project(db:Session, user_id: int) -> User:
     
 def update_new_login(db:Session, user_id: int) -> User:
     db_user = get_user(db, user_id)
+    
+def update_new_login(db:Session, user_id: int) -> User:
+    db_user = get_user(db, user_id)
