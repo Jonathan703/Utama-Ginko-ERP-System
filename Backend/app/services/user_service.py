@@ -137,7 +137,6 @@ def update_user_password(db: Session, user_id: int, current_password: str, new_p
     except Exception:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to update password")
-    
 def deactivate_user(db: Session, user_id: int) -> User:
     db_user = get_user(db, user_id)
     if not db_user:
@@ -250,8 +249,6 @@ def get_users_with_role_info(db: Session, skip: int = 0, limit: int = 100) -> Li
             "role": role_info
         }
         result.append(user_dict)
-        
-    return result
 
 def validate_user_credentials(db: Session, username: str, password: str) -> Optional[User]:
     user = get_user_by_username(db, username)
