@@ -49,6 +49,7 @@ def create_access_token(data: Dict, expires_delta: Optional[timedelta] = None) -
     )
     
     return encoded_jwt
+  
 
 def verify_token(token: str) -> Optional[Dict]:
     try:
