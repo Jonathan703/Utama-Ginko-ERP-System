@@ -30,7 +30,10 @@ async def get_current_active_user(
         
     user = get_current_user(db, token)
     if not user:
-        
+        user = get_current_user(db, token)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authentication credentials",
