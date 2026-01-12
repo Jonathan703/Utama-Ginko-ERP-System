@@ -274,7 +274,7 @@ Index('idx_financial_transaction_contract_id', FinancialTransaction.contract_id)
 Index('idx_financial_transaction_status', FinancialTransaction.status)
 Index('idx_workflow_history_entity', WorkflowHistory.entity_type, WorkflowHistory.entity_id)
 Index('idx_transaction_user_id', Notification.user_id)
-Index('idx_trasaction_is_read', Notification.is_read)
+Index('idx_transaction_is_read', Notification.is_read)
 
 CheckConstraint("status IN ('draft', 'pending', 'approved', 'active', 'completed', 'cancelled, 'expired')", name="check_contract_status")
 CheckConstraint("marketing_status IN ('pending', 'submitted', 'approved', 'rejected', 'cancelled')", name="check_marketing_status")
