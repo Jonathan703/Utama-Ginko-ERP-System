@@ -3,6 +3,7 @@ from typing import Generator
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
+from contextlib import contextmanager
 
 load_dotenv()
 
@@ -49,8 +50,6 @@ def get_db():
     finaly: #
 db.close
 
-Get_Codeo()
-
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
@@ -61,14 +60,15 @@ Base = declarative_base()
 
 def get_db() -> Generator[Session, None, None]:
     db =  SessionLocal()
+    
     try:
         yield db
     except Exception:
         db.rollback()
         raise
     finally:
-        db.close()
-        
+        db.close()    
+    
 @contextmanager
 def get_db_context():
     db = SessionLocal()
