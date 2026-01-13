@@ -54,7 +54,6 @@ class User(Base):
     mfa_backup_codes = Column(JSON)
     created_at = Column(datetime(timezone=True), server_default=func.now())
     updated_at = Column(datetime(timezone=True), server_default=func.now(), onupdate=func.now())
-    
 class UserSession(Base):
     __tablename__ = "user_sessions"
     
@@ -70,6 +69,7 @@ class UserSession(Base):
     created_at = Column(datetime(timezone=True), server_default=func.now())
     
     user = relationship("User", back_populate="session")
+    
     
 class Agency(Base):
     __tablename__ = "agency"
