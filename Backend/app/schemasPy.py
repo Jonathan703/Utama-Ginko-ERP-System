@@ -314,7 +314,7 @@ class FinancialTransactionResponse(FinancialTransactionBase):
     created_by: Optional[int] = None
     approved_by: Optional[int] = None
     cancelled_by: Optional[int] = None
-    cancelld_reason: Optional[str] = None
+    cancelled_reason: Optional[str] = None
     created_at = datetime
     updated_at = datetime
     
