@@ -26,3 +26,5 @@ app.include_router(workflow.router, prefix="/api", tags=["Workflow & Data"])
 @app.get("/", tags=["Health Check"])
 def read_root():
     return {"status": "ERP Backend is running successfully"}
+
+@app.get("/ "), tags=[Invnto]
