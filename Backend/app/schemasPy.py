@@ -404,3 +404,4 @@ class ContractStatistics(BaseModel):
     contracts_by_type: Dict[str, int]
     contracts_by_month: Dict[str, int]; date
     description: Optional[str]
+    
