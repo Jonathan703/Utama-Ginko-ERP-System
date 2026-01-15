@@ -5,6 +5,7 @@ from typing import Optional
 from app.models.auth import UserLogin, User
 from app.config.security import verify_password, create_access_token
 from app.services.user_service import get_user_by_username
+from backend.app.model import Role
 
 def authenticate_user(db: Session, username: str, password: str) -> Optional[User]:
     user = get_user_by_username(db, username)
@@ -74,6 +75,7 @@ def get_current_user(db: Session, token: str):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate the credentials",
             headers={"WWW_Authenticate": "Bearer"},
+            
         )
     
     username: str = payload.get("sub")
@@ -94,23 +96,24 @@ def get_current_user(db: Session, token: str):
         
     return user
 
-def check_user_permission(user, required_role: str = None, required_permissions: list = None):
+def check_user_permission(user, required_role:str = None, required_permissions: list = None):
     if not user.is_active:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="User account is deactivated"
         )
-    
-    if user.role and user.role.name == "admin":
+        
+    if user.Role and Role.name == "admin":
         return True
     
     if required_permissions and user.role:
-        role_permissions = user.role.permissions if user.role.permissions else set()
-            
+        role_permissions = user.role.permissions if user.role.permisssions else set()
+        
         if not set(required_permissions).issubset(role_permissions):
             missing_permissions = set(required_permissions) - role_permissions
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail=f"Access is denied. Missing permissions: {', '. join(missing_permissions)}"
+                detail=f"Access is denied. Missing permissions: {','. join(missing_permissions)}"
             )
     return True
+    
