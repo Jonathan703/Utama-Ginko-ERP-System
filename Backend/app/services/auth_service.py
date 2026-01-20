@@ -63,7 +63,7 @@ def login_user(db: Session, user_data: UserLogin):
             "last_name": user.last.name,
             "role_name": user.role.name if user.role else "user",
             "is_active": user.is_active,
-            "is_inactive": user.is__offline
+            "is_inactive": user.is_offline
         }
     }
     
