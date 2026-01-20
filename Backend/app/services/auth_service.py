@@ -62,7 +62,8 @@ def login_user(db: Session, user_data: UserLogin):
             "first_name": user.first.name,
             "last_name": user.last.name,
             "role_name": user.role.name if user.role else "user",
-            "is_active": user.is_active
+            "is_active": user.is_active,
+            "is_inactive": user.is__offline
         }
     }
     
@@ -116,4 +117,3 @@ def check_user_permission(user, required_role:str = None, required_permissions: 
                 detail=f"Access is denied. Missing permissions: {','. join(missing_permissions)}"
             )
     return True
-    
