@@ -75,8 +75,7 @@ def get_current_user(db: Session, token: str):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate the credentials",
-            headers={"WWW_Authenticate": "Bearer"},
-            
+            headers={"WWW_Authenticate": "Bearer"}
         )
     
     username: str = payload.get("sub")
@@ -117,3 +116,10 @@ def check_user_permission(user, required_role:str = None, required_permissions: 
                 detail=f"Access is denied. Missing permissions: {','. join(missing_permissions)}"
             )
     return True
+
+def check_user_permission(user, required_role:str = None, required_permissions: list = None):
+    if user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access is denied, user account already active. Please try again."
+        )
